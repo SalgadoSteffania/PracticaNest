@@ -88,3 +88,4 @@ model PostCategory {
 
   @@id([postId, categoryId])
 }
+
