@@ -4,17 +4,17 @@ import * as bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Starting seed...')
+  console.log('Starting seed...')
 
   // Limpiar datos existentes en el orden correcto (por foreign keys)
-  console.log('🗑️ Cleaning existing data...')
+  console.log('Cleaning existing data...')
   await prisma.user.deleteMany()
   console.log('Users deleted')
   await prisma.tenant.deleteMany()
   console.log('Tenants deleted')
 
   // Crear tenants
-  console.log('🏢 Creating tenants...')
+  console.log('Creating tenants...')
   const tenant1 = await prisma.tenant.create({
     data: {
       name: 'Tech Solutions Inc.',
@@ -37,12 +37,12 @@ async function main() {
   console.log(`Tenant 3 created: ${tenant3.name}`)
 
   // Hashear contraseñas
-  console.log('🔐 Hashing passwords...')
+  console.log(' Hashing passwords...')
   const hashedPassword1 = await bcrypt.hash('password123', 10)
   const hashedPassword2 = await bcrypt.hash('securepass', 10)
 
   // Crear usuarios para tenant1
-  console.log('👥 Creating users for tenant 1...')
+  console.log(' Creating users for tenant 1...')
   const adminTenant1 = await prisma.user.create({
     data: {
       email: 'admin@techsolutions.com',
@@ -68,7 +68,7 @@ async function main() {
   console.log(`User created: ${userTenant1.email}`)
 
   // Crear usuarios para tenant2
-  console.log('👥 Creating users for tenant 2...')
+  console.log('Creating users for tenant 2...')
   const adminTenant2 = await prisma.user.create({
     data: {
       email: 'admin@marketingpro.com',
@@ -94,7 +94,7 @@ async function main() {
   console.log(`User created: ${userTenant2.email}`)
 
   // Crear usuarios para tenant3
-  console.log('👥 Creating users for tenant 3...')
+  console.log(' Creating users for tenant 3...')
   const adminTenant3 = await prisma.user.create({
     data: {
       email: 'admin@consultingexperts.com',
@@ -119,8 +119,8 @@ async function main() {
   })
   console.log(`User created: ${userTenant3.email}`)
 
-  console.log('\n✅ Seed completed successfully!')
-  console.log('\n🔐 Test credentials:')
+  console.log('\n Seed completed successfully!')
+  console.log('\n Test credentials:')
   console.log('Tenant 1 - Tech Solutions Inc.:')
   console.log('   Admin: admin@techsolutions.com / password123')
   console.log('   User:  user@techsolutions.com / securepass')
@@ -141,14 +141,14 @@ async function main() {
 
 main()
   .then(async (result) => {
-    console.log('\n📊 Seed results:')
+    console.log('\n Seed results:')
     console.log(`   - Tenants: ${result.tenants.length}`)
     console.log(`   - Users: ${result.users.length}`)
     console.log(`   - ADMIN users: ${result.users.filter(u => u.role === 'ADMIN').length}`)
     console.log(`   - USER users: ${result.users.filter(u => u.role === 'USER').length}`)
     
     // Mostrar resumen por tenant
-    console.log('\n🏢 Tenants summary:')
+    console.log('\n Tenants summary:')
     for (const tenant of result.tenants) {
       const tenantUsers = await prisma.user.findMany({
         where: { tenantId: tenant.id },
@@ -163,7 +163,7 @@ main()
     await prisma.$disconnect()
   })
   .catch(async (e) => {
-    console.error('❌ Seed error:', e)
+    console.error(' Seed error:', e)
     await prisma.$disconnect()
     process.exit(1)
   })
